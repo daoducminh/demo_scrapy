@@ -2,7 +2,7 @@
 
 ## Installation
 
-- Scrapy and Flask: `pip3 install scrapy flask`
+- Scrapy and Flask: `pip3 install scrapy flask pymongo pysolr elasticsearch`
 - Solr: Download [Solr 8.5.1](https://www.apache.org/dyn/closer.lua/lucene/solr/8.5.1/solr-8.5.1.tgz) and extract. In `solr-8.5.1` folder, run: `bin/solr start`
 
 ## Usage

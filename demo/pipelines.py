@@ -7,11 +7,12 @@
 
 
 import json
-import pysolr
+import pymongo
+from elasticsearch import Elasticsearch
+# import pysolr
 
 
 class JsonWriterPipeline(object):
-
     def open_spider(self, spider):
         self.file = open('items.jsonl', 'w')
 
@@ -19,19 +20,68 @@ class JsonWriterPipeline(object):
         self.file.close()
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item)) + "\n"
+        line = json.dumps(dict(item))+'\n'
         self.file.write(line)
         return item
 
 
-class PySolr(object):
+class ElasticSearchPipeline(object):
+    def __init__(self):
+        self.es = None
+
     def open_spider(self, spider):
-        self.solr = pysolr.Solr(
-            'http://localhost:8983/solr/test', always_commit=True)
+        self.es = Elasticsearch('34.192.216.218:9200')
 
     def close_spider(self, spider):
         pass
 
     def process_item(self, item, spider):
-        self.solr.add(item)
+        self.es.index('news', item)
         return item
+
+
+class MongoDBPipeline(object):
+    def __init__(self):
+        self.collection_name = None
+        self.mongo_uri = 'mongodb://localhost:27017/'
+        self.mongo_db = 'crawl'
+        self.client = None
+        self.db = None
+        self.collection = None
+
+    def open_spider(self, spider):
+        self.client = pymongo.MongoClient(self.mongo_uri)
+        self.db = self.client[self.mongo_db]
+        self.collection = self.db['24h']
+
+    def close_spider(self, spider):
+        self.client.close()
+
+    def process_item(self, item, spider):
+        self.collection.insert_one(item)
+        return item
+
+# class PySolr(object):
+#     def open_spider(self, spider):
+#         self.solr = pysolr.Solr(
+#             'http://localhost:8983/solr/test', always_commit=True)
+
+#     def close_spider(self, spider):
+#         pass
+
+#     def process_item(self, item, spider):
+#         self.solr.add(item)
+#         return item
+
+# class Pipeline(object):
+#     def __init__(self):
+#         pass
+
+#     def open_spider(self, spider):
+#         pass
+
+#     def close_spider(self, spider):
+#         pass
+
+#     def process_item(self, item, spider):
+#         pass
