@@ -12,7 +12,7 @@ import pymongo
 # import pysolr
 
 
-class JsonWriterPipeline(object):
+class JsonQuotesWriterPipeline(object):
     def open_spider(self, spider):
         self.file_quotes = open('quotes.json', 'w')
         self.file_quotes.write('[\n')
@@ -34,24 +34,9 @@ class JsonWriterPipeline(object):
         return item
 
 
-class JsonQuotesWriterPipeline(object):
+class JsonWriterPipeline(object):
     def open_spider(self, spider):
-        self.file = open('quotes.json', 'w')
-        self.file.write('[\n')
-
-    def close_spider(self, spider):
-        self.file.write(']')
-        self.file.close()
-
-    def process_item(self, item, spider):
-        line = json.dumps(dict(item))+',\n'
-        self.file.write(line)
-        return item
-
-
-class JsonAuthorsWriterPipeline(object):
-    def open_spider(self, spider):
-        self.file = open('authors.json', 'w')
+        self.file = open('test.json', 'w')
         self.file.write('[\n')
 
     def close_spider(self, spider):
