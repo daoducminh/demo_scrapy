@@ -12,8 +12,8 @@ class AuthorsSpider(scrapy.Spider):
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            'demo.pipelines.PySolrAuthorsPipeline': 1,
-            'demo.pipelines.JsonAuthorsWriterPipeline': 1
+            # 'demo.pipelines.PySolrAuthorsPipeline': 1,
+            # 'demo.pipelines.JsonAuthorsWriterPipeline': 1
         },
         # 'LOG_ENABLED': False,
         'DEFAULT_REQUEST_HEADERS': {
