@@ -36,10 +36,6 @@ class QuotesSpider(scrapy.Spider):
                 callback=self.parse_author
             )
             yield loader.load_item()
-            yield Request(
-                url=author_url,
-                callback=self.parse_author
-            )
         next_page = response.css('li.next a::attr(href)').get()
         if next_page is not None:
             next_page = response.urljoin(next_page)
