@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from demo.items import Quote
+from demo.items import Quote, Author
 import scrapy
 from scrapy import Request
 from scrapy.http.response import Response
@@ -12,7 +12,7 @@ class QuotesSpider(scrapy.Spider):
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            'demo.pipelines.PySolrQuotesPipeline': 1,
+            # 'demo.pipelines.PySolrQuotesPipeline': 1,
             'demo.pipelines.JsonQuotesWriterPipeline': 1
         },
         # 'LOG_ENABLED': False,
@@ -29,8 +29,23 @@ class QuotesSpider(scrapy.Spider):
             loader.add_css('content', 'span.text')
             loader.add_css('author', 'span small')
             loader.add_css('tags', 'a.tag')
+            url = quote.css('span a::attr(href)').get()
+            url = response.urljoin(url)
+            yield Request(
+                url=url,
+                callback=self.parse_author
+            )
             yield loader.load_item()
         next_page = response.css('li.next a::attr(href)').get()
         if next_page is not None:
             next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback=self.parse)
+            yield Request(next_page, callback=self.parse)
+
+    def parse_author(self, response: Response):
+        author_block = response.css('div.author-details')
+        loader = ItemLoader(item=Author(), selector=author_block)
+        loader.add_css('name', 'h3.author-title')
+        loader.add_css('born_date', 'span.author-born-date')
+        loader.add_css('born_location', 'span.author-born-location')
+        loader.add_css('description', 'div.author-description')
+        yield loader.load_item()

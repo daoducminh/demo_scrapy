@@ -14,7 +14,7 @@ import pysolr
 
 class JsonQuotesWriterPipeline(object):
     def open_spider(self, spider):
-        self.file = open('quotes.json', 'w')
+        self.file = open('quotes1.json', 'w')
         self.file.write('[\n')
 
     def close_spider(self, spider):
