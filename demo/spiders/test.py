@@ -6,13 +6,13 @@ from scrapy.loader import ItemLoader
 
 class TestSpider(Spider):
     name = 'test'
-    start_urls = ['https://www.24h.com.vn/cong-nghe-thong-tin-c55.html']
+    start_urls = ['https://www.24h.com.vn/']
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            # 'demo.pipelines.JsonWriterPipeline': 1,
+            'demo.pipelines.JsonWriterPipeline': 1,
             # 'demo.pipelines.MongoDBPipeline': 1,
-            'demo.pipelines.ElasticSearchPipeline': 1
+            # 'demo.pipelines.ElasticSearchPipeline': 1
         },
         # 'LOG_ENABLED': False,
         'DEFAULT_REQUEST_HEADERS': {
@@ -22,6 +22,9 @@ class TestSpider(Spider):
     }
 
     def parse(self, response):
+        pass
+
+    def parse_page(self, response):
         items = response.xpath('//article/header//a')
         for item in items:
             article = {
