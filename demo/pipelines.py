@@ -8,8 +8,35 @@
 
 import json
 import pymongo
-# from elasticsearch import Elasticsearch
+import pickle
+from scrapy.exceptions import DropItem
+
+from elasticsearch import Elasticsearch
 # import pysolr
+
+URLS_FILE = 'temp/urls.pkl'
+ES_HOST = '23.98.73.116:9200'
+
+
+class RemoveDuplicatedPipeline(object):
+    def open_spider(self, spider):
+        try:
+            with open(URLS_FILE, 'rb') as file:
+                self.urls = pickle.load(file)
+        except Exception:
+            self.urls = []
+
+    def close_spider(self, spider):
+        with open(URLS_FILE, 'wb') as file:
+            pickle.dump(self.urls, file)
+
+    def process_item(self, item, spider):
+        url = item['url']
+        if url in self.urls:
+            raise DropItem('Duplicated item found:', item)
+        else:
+            self.urls.append(url)
+            return item
 
 
 class JsonQuotesWriterPipeline(object):
@@ -44,24 +71,25 @@ class JsonWriterPipeline(object):
         self.file.close()
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item))+',\n'
-        self.file.write(line)
+        if item:
+            line = json.dumps(dict(item))+',\n'
+            self.file.write(line)
         return item
 
 
-# class ElasticSearchPipeline(object):
-#     def __init__(self):
-#         self.es = None
+class ElasticSearchPipeline(object):
+    def __init__(self):
+        self.es = None
 
-#     def open_spider(self, spider):
-#         self.es = Elasticsearch('34.192.216.218:9200')
+    def open_spider(self, spider):
+        self.es = Elasticsearch(ES_HOST)
 
-#     def close_spider(self, spider):
-#         pass
+    def close_spider(self, spider):
+        pass
 
-#     def process_item(self, item, spider):
-#         self.es.index('news', item)
-#         return item
+    def process_item(self, item, spider):
+        self.es.index('news', item)
+        return item
 
 
 # class MongoDBPipeline(object):

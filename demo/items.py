@@ -25,6 +25,17 @@ class Article(Item):
     )
 
 
+class NewsColumn(Item):
+    title = Field(
+        input_processor=MapCompose(remove_tags, str.strip),
+        output_processor=Join()
+    )
+    url = Field(
+        input_processor=MapCompose(remove_tags, str.strip),
+        output_processor=Join()
+    )
+
+
 class Quote(Item):
     content = Field(
         input_processor=MapCompose(remove_tags, remove_quote_symbol),
