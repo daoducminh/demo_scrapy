@@ -15,6 +15,9 @@
     ES_HOST=23.98.73.116:9200
     ES_INDEX=news
     URLS_FILE=temp/urls.pkl
+    FLASK_APP=flaskr/app.py
+    FLASK_RUN_HOST=0.0.0.0
+    FLASK_RUN_PORT=3000
     ```
     While `ES_HOST` is ElasticSearch IP Address, `ES_INDEX` is the index name on ElasticSearch.
 
