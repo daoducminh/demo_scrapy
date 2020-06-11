@@ -22,6 +22,7 @@ setup(
         'elasticsearch',
         'elasticsearch-dsl',
         'python-dotenv',
+        'flask',
         'pylint',
         'autopep8'
     ],
