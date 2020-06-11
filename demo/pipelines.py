@@ -7,15 +7,17 @@
 
 
 import json
+import os
 import pickle
-from scrapy.exceptions import DropItem
 
 from elasticsearch import Elasticsearch
+from scrapy.exceptions import DropItem
+
 # import pysolr
 
-URLS_FILE = 'temp/urls.pkl'
-ES_HOST = '23.98.73.116:9200'
-ES_INDEX = 'news'
+URLS_FILE = os.getenv('URLS_FILE')
+ES_HOST = os.getenv('ES_HOST')
+ES_INDEX = os.getenv('ES_INDEX')
 
 
 class RemoveDuplicatedPipeline(object):

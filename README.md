@@ -10,6 +10,13 @@
 
 1. Create python virtual environment: `virtualenv .virtualenvs`
 2. Install python modules: `.virtualenvs/bin/python -m pip install .`
+3. Create `.env` file with:
+    ```
+    ES_HOST=23.98.73.116:9200
+    ES_INDEX=news
+    URLS_FILE=temp/urls.pkl
+    ```
+    While `ES_HOST` is ElasticSearch IP Address, `ES_INDEX` is the index name on ElasticSearch.
 
 ## Usage
 
