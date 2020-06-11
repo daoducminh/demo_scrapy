@@ -13,10 +13,13 @@ def home():
 @app.route('/search', methods=['post'])
 def search():
     body = request.get_json()
-    client = Elasticsearch('23.98.73.116:9200')
+    client = Elasticsearch()
     response = client.search(
         index='news',
-        body=body
+        body=body,
+        params={
+            'size': 20
+        }
     )
     return response
 

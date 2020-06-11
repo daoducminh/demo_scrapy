@@ -14,7 +14,7 @@ h1.well {
     justify-content: center;
     align-items: center;
     font-family: Poppins, sans-serif;
-    background-color: #a598ee;
+    background-color: #b8acfa;
     background-size: cover;
     background-position: center center;
     padding: 15px;
@@ -70,4 +70,12 @@ em {
     font-style: normal;
     font-weight: bold;
     background-color: crimson;
+}
+
+.news {
+    font-size: large;
+}
+
+.news-row {
+    margin: 10pt;
 }

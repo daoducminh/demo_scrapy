@@ -79,7 +79,6 @@ class JsonWriterPipeline(object):
 
 class ElasticSearchPipeline(object):
     def open_spider(self, spider):
-        print('ES_HOST', ES_HOST)
         self.client = Elasticsearch(ES_HOST)
 
     def close_spider(self, spider):
@@ -99,7 +98,6 @@ class ElasticSearchPipeline(object):
             index=ES_INDEX,
             body=body
         )
-        print(response)
         if response['hits']['hits']:
             raise DropItem('Duplicated item found:', item)
         else:

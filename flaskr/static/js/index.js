@@ -1,14 +1,5 @@
-$('.btn-search').click(() => {
+function search() {
     const text = $('#search').val()
-    // $.post('/elastic-search/movie', { keyword: text }, (data, status) => {
-    //     console.log(data);
-    //     $('#result-box').empty();
-    //     const arr = data.suggest.suggest1[0].options;
-    //     for (let i = 0; i < arr.length; i++) {
-    //         $('#result-box').append(`<p>${arr[i]._source.name}</p>`)
-    //     }
-    // })
-    console.log('clicked');
     body = {
         query: {
             match: {
@@ -31,9 +22,10 @@ $('.btn-search').click(() => {
 
             for (let i = 0; i < result.length; i++) {
                 $('#result-box').append(
-                    `<div class="col-md-7">${result[i]['_source'].title}</div>
-<div class="col-md-3">${result[i]['_source'].column}</div>
-<div class="col-md-2">${result[i]['_score']}</div>`
+                    `<div class="row news-row"><div class="col-md-1 news">${i + 1}</div>
+<div class="col-md-6 news"><a href="${result[i]['_source'].url}">${result[i]['_source'].title}</a></div>
+<div class="col-md-3 news">${result[i]['_source'].column}</div>
+<div class="col-md-2 news">${result[i]['_score']}</div></div><hr/>`
                 )
             }
             // $('#result-box')
@@ -41,4 +33,8 @@ $('.btn-search').click(() => {
         contentType: "application/json",
         dataType: 'json'
     })
+}
+
+$('.btn-search').click(() => {
+    search();
 });

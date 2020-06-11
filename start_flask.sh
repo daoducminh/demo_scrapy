@@ -1,2 +1,2 @@
 export FLASK_APP=flaskr/app.py
-flask run
+.virtualenvs/bin/python -m flask run
