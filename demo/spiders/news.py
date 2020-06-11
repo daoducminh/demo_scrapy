@@ -36,11 +36,11 @@ class NewsSpider(Spider):
         column_list = response.xpath(
             "//div[@id='zone_menu_trai_header']//li/a"
         )
-        for c in column_list[1:4]:
+        for c in column_list[1:-4]:
             url = c.xpath('@href').get()
             column = c.xpath('text()').get()
             url = response.urljoin(url)
-            for i in range(1, 5):
+            for i in range(1, 21):
                 yield Request(
                     url=url + VPAGE.format(i),
                     callback=self.parse_page,
