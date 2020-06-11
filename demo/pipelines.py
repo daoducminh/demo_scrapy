@@ -4,16 +4,14 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
 import json
 import os
 import pickle
 
-from elasticsearch import Elasticsearch
-from scrapy.exceptions import DropItem
 
-# import pysolr
+from elasticsearch import Elasticsearch
+# from elasticsearch_dsl import Search
+from scrapy.exceptions import DropItem
 
 URLS_FILE = os.getenv('URLS_FILE')
 ES_HOST = os.getenv('ES_HOST')
@@ -80,18 +78,44 @@ class JsonWriterPipeline(object):
 
 
 class ElasticSearchPipeline(object):
-    def __init__(self):
-        self.es = None
-
     def open_spider(self, spider):
-        self.es = Elasticsearch(ES_HOST)
+        print('ES_HOST', ES_HOST)
+        self.client = Elasticsearch(ES_HOST)
 
     def close_spider(self, spider):
         pass
 
     def process_item(self, item, spider):
-        self.es.index(ES_INDEX, item)
-        return item
+        body = {
+            'query': {
+                'term': {
+                    'url': {
+                        'value': item['url']
+                    }
+                }
+            }
+        }
+        response = self.client.search(
+            index=ES_INDEX,
+            body=body
+        )
+        print(response)
+        if response['hits']['hits']:
+            raise DropItem('Duplicated item found:', item)
+        else:
+            self.client.index(ES_INDEX, item)
+            return item
+
+        # s = Search(using=self.client, index=ES_INDEX).query(
+        #     'term', url=item['url']
+        # )
+        # response = s.execute()
+        # print('Respones', response)
+        # if response:
+        #     raise DropItem('Duplicated item found:', item)
+        # else:
+        #     self.client.index(ES_INDEX, item)
+        #     return item
 
 
 # class MongoDBPipeline(object):

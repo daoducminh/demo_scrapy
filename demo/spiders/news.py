@@ -14,7 +14,7 @@ class NewsSpider(Spider):
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            'demo.pipelines.RemoveDuplicatedPipeline': 1,
+            # 'demo.pipelines.RemoveDuplicated2Pipeline': 1,
             # 'demo.pipelines.JsonWriterPipeline': 100,
             'demo.pipelines.ElasticSearchPipeline': 200
         },
