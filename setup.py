@@ -19,7 +19,7 @@ setup(
         'scrapy',
         'scrapy-splash',
         'pymongo',
-        'elastichsearch',
+        'elasticsearch',
         'python-dotenv',
         'pylint',
         'autopep8'
