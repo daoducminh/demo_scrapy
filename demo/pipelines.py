@@ -15,7 +15,7 @@ from elasticsearch import Elasticsearch
 
 URLS_FILE = 'temp/urls.pkl'
 ES_HOST = '23.98.73.116:9200'
-ES_INDEX = 'custom_news'
+ES_INDEX = 'news'
 
 
 class RemoveDuplicatedPipeline(object):
