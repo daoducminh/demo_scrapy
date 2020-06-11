@@ -15,11 +15,10 @@ class NewsSpider(Spider):
     custom_settings = {
         'ITEM_PIPELINES': {
             'demo.pipelines.RemoveDuplicatedPipeline': 1,
-            'demo.pipelines.JsonWriterPipeline': 100,
-            # 'demo.pipelines.MongoDBPipeline': 1,
-            # 'demo.pipelines.ElasticSearchPipeline': 1
+            # 'demo.pipelines.JsonWriterPipeline': 100,
+            'demo.pipelines.ElasticSearchPipeline': 200
         },
-        # 'LOG_ENABLED': False,
+        'LOG_ENABLED': False,
         'DEFAULT_REQUEST_HEADERS': {
         }
     }
@@ -34,14 +33,14 @@ class NewsSpider(Spider):
         )
 
     def parse_homepage(self, response: SplashResponse):
-        # columns = response.css('#zone_menu_trai_header ul li a')
         column_list = response.xpath(
-            "//div[@id='zone_menu_trai_header']//li/a")
+            "//div[@id='zone_menu_trai_header']//li/a"
+        )
         for c in column_list[1:4]:
             url = c.xpath('@href').get()
             column = c.xpath('text()').get()
             url = response.urljoin(url)
-            for i in range(1, 3):
+            for i in range(1, 5):
                 yield Request(
                     url=url + VPAGE.format(i),
                     callback=self.parse_page,

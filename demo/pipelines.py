@@ -7,7 +7,6 @@
 
 
 import json
-import pymongo
 import pickle
 from scrapy.exceptions import DropItem
 
@@ -16,6 +15,7 @@ from elasticsearch import Elasticsearch
 
 URLS_FILE = 'temp/urls.pkl'
 ES_HOST = '23.98.73.116:9200'
+ES_INDEX = 'custom_news'
 
 
 class RemoveDuplicatedPipeline(object):
@@ -88,7 +88,7 @@ class ElasticSearchPipeline(object):
         pass
 
     def process_item(self, item, spider):
-        self.es.index('news', item)
+        self.es.index(ES_INDEX, item)
         return item
 
 

@@ -1,20 +1,18 @@
-# Demo Scrapy and Flask
+# IT4853 - Nhom 1
+
+## Prerequisite
+
+- `python3-venv`
+- ElasticSearch instance
+- Docker
 
 ## Installation
 
-- Scrapy and Flask: `pip3 install scrapy flask pymongo pysolr elasticsearch`
-- Solr: Download [Solr 8.5.1](https://www.apache.org/dyn/closer.lua/lucene/solr/8.5.1/solr-8.5.1.tgz) and extract. In `solr-8.5.1` folder, run: `bin/solr start`
+1. Create python virtual environment: `virtualenv .virtualenvs`
+2. Install python modules: `.virtualenvs/bin/python -m pip install .`
 
 ## Usage
 
-1. Scrapy:
-- In `solr-8.5.1` folder, run: `bin/solr create -c test`
-- In `demo_scrapy` folder, run: `scrapy crawl test`
-
-2. Flask:
-- In `demo_scrapy` folder, run:
-
-```bash
-export FLASK_APP=test_flask.py
-flask run
-```
+1. Start Splash using Docker: `docker run -d -p 8050:8050 scrapinghub/splash`
+2. Start crawling: `.virtualenvs/bin/python -m scrapy crawl news`
+    - To enable logging, open file `demo/spider/news` and remove `'LOG_ENABLED': False,` in `custom_settings` 
