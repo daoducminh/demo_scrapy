@@ -10,9 +10,6 @@ function search() {
     $.ajax({
         type: 'POST',
         url: '/search',
-        beforeSend: (request) => {
-            request.setRequestHeader("Access-Control-Allow-Origin", true);
-        },
         data: JSON.stringify(body),
         success: (data, error) => {
             $('#result-box').empty();
@@ -38,3 +35,9 @@ function search() {
 $('.btn-search').click(() => {
     search();
 });
+
+$('#search').keypress((e) => {
+    if (e.keyCode == 13) {
+        search()
+    }
+})
